@@ -144,7 +144,7 @@
 							//Classify swipe as either horizontal or vertical
 							var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
 							//Classify as right-left or up-down
-							if(isHorizontal){
+							if(isHorizontal && gesture.state == "stop"){
 								if(gesture.direction[0] > 0){
 									PlayQueue.next();
 									Playback.startPlaying(PlayQueue.getCurrent());
