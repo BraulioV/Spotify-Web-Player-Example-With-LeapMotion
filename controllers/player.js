@@ -134,8 +134,14 @@
              if (frame.gestures) {
              	for (var i = 0; i < frame.gestures.length; i++) {
                 	if (frame.gestures[i].type == 'keyTap') {
-                		console.log("estoy en el player")
-                    	Playback.startPlaying(PlayQueue.getCurrent())
+                		if(Playback.isPlaying()){
+                    		//Playback.startPlaying(PlayQueue.getCurrent())
+                    		Playback.pause()
+                		}
+                		else{
+                			Playback.resume()
+                		}
+
                 // } else if (frame.gestures[0].type == 'swipe') {
                 // 	PlayQueue.next()
                 // 	Playback.startPlaying(PlayQueue.getCurrent());
