@@ -130,24 +130,55 @@
 		});
 
 		Leap.loop({enableGestures: true}, function(frame) {
+			if(frame.valid && frame.gestures.length > 0){
+				frame.gestures.forEach(function(gesture) {
+					switch (gesture.type){
+						case "keyTap":
+							if (Playback.isPlaying()) {
+								Playback.pause();
+							} else {
+								Playback.resume();
+							}
+						break;
+						case "swipe":
+							//Classify swipe as either horizontal or vertical
+							var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+							//Classify as right-left or up-down
+							if(isHorizontal){
+								if(gesture.direction[0] > 0){
+									PlayQueue.next();
+									Playback.startPlaying(PlayQueue.getCurrent());
+								} else {
+									PlayQueue.prev();
+									Playback.startPlaying(PlayQueue.getCurrent());
+								}
+							}
+						break;
+						case "circle":
+							console.log("Circle Gesture");
+						break;
+						case "screenTap":
+							console.log("Screen Tap Gesture");
+						break;
+					}
+				});
+			}
 			//console.log('Leap loop')
-             if (frame.gestures) {
-             	for (var i = 0; i < frame.gestures.length; i++) {
-                	if (frame.gestures[i].type == 'keyTap') {
-                		if(Playback.isPlaying()){
-                    		//Playback.startPlaying(PlayQueue.getCurrent())
-                    		Playback.pause()
-                		}
-                		else{
-                			Playback.resume()
-                		}
+             // if (frame.gestures) {
+             // 	for (var i = 0; i < frame.gestures.length; i++) {
+             //    	if (frame.gestures[i].type == 'keyTap') {
+             //    		if(Playback.isPlaying()){
+             //        		//Playback.startPlaying(PlayQueue.getCurrent())
+             //        		Playback.pause()
+             //    		}
+             //    		else{
+             //    			Playback.resume()
+             //    		}
+            	// 	} else {
 
-                // } else if (frame.gestures[0].type == 'swipe') {
-                // 	PlayQueue.next()
-                // 	Playback.startPlaying(PlayQueue.getCurrent());
-            		}
-                 }
-             }
+            	// 	}
+             //     }
+             // }
         });
 	});
 
