@@ -130,15 +130,18 @@
 		});
 
 		Leap.loop({enableGestures: true}, function(frame) {
-			console.log('Leap loop')
-            // if (frame.gestures) {
-            //     if (frame.gestures[0].type == 'keyTap') {
-                    Playback.startPlaying(PlayQueue.getCurrent())
+			//console.log('Leap loop')
+             if (frame.gestures) {
+             	for (var i = 0; i < frame.gestures.length; i++) {
+                	if (frame.gestures[i].type == 'keyTap') {
+                		console.log("estoy en el player")
+                    	Playback.startPlaying(PlayQueue.getCurrent())
                 // } else if (frame.gestures[0].type == 'swipe') {
                 // 	PlayQueue.next()
                 // 	Playback.startPlaying(PlayQueue.getCurrent());
-                // }
-            // }
+            		}
+                 }
+             }
         });
 	});
 
