@@ -128,6 +128,18 @@
 			$scope.progress = Playback.getProgress();
 			$scope.duration = Playback.getDuration();
 		});
+
+		Leap.loop({enableGestures: true}, function(frame) {
+			console.log('Leap loop')
+            // if (frame.gestures) {
+            //     if (frame.gestures[0].type == 'keyTap') {
+                    Playback.startPlaying(PlayQueue.getCurrent())
+                // } else if (frame.gestures[0].type == 'swipe') {
+                // 	PlayQueue.next()
+                // 	Playback.startPlaying(PlayQueue.getCurrent());
+                // }
+            // }
+        });
 	});
 
 })();
