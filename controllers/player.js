@@ -1,6 +1,7 @@
 (function() {
 
 	var module = angular.module('PlayerApp');
+	var eventDispatched = false;		// temporizador para leap
 
 	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
 		$scope.view = 'welcome';
@@ -143,8 +144,9 @@
 						case "swipe":
 							//Classify swipe as either horizontal or vertical
 							var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
-							//Classify as right-left or up-down
-							if(isHorizontal && gesture.state == "stop"){
+							//Classify as right-left
+							if(isHorizontal && !eventDispatched){
+								eventDispatched = true
 								if(gesture.direction[0] > 0){
 									PlayQueue.next();
 									Playback.startPlaying(PlayQueue.getCurrent());
@@ -153,6 +155,9 @@
 									Playback.startPlaying(PlayQueue.getCurrent());
 								}
 							}
+							window.setTimeout(function() {
+                        		eventDispatched = false;
+							}, 300);
 						break;
 						case "circle":
 							console.log("Circle Gesture");
@@ -163,22 +168,6 @@
 					}
 				});
 			}
-			//console.log('Leap loop')
-             // if (frame.gestures) {
-             // 	for (var i = 0; i < frame.gestures.length; i++) {
-             //    	if (frame.gestures[i].type == 'keyTap') {
-             //    		if(Playback.isPlaying()){
-             //        		//Playback.startPlaying(PlayQueue.getCurrent())
-             //        		Playback.pause()
-             //    		}
-             //    		else{
-             //    			Playback.resume()
-             //    		}
-            	// 	} else {
-
-            	// 	}
-             //     }
-             // }
         });
 	});
 
