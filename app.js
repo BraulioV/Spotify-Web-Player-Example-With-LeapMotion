@@ -1,6 +1,6 @@
 (function() {
 
-	var app = angular.module('PlayerApp', ['ngRoute']);
+	var app = angular.module('PlayerApp', ['ngRoute', 'ngProgress']);
 
 	app.config(function($routeProvider) {
 		$routeProvider.

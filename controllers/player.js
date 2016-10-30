@@ -29,7 +29,7 @@
 		return offset;
 	}
 
-	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
+	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
 		$scope.view = 'welcome';
 		$scope.profileUsername = Auth.getUsername();
 		$scope.playlists = [];
@@ -156,6 +156,8 @@
 			$scope.duration = Playback.getDuration();
 		});
 
+		// progressbar
+		$scope.progressbar = ngProgressFactory.createInstance();
 
 		var controller = Leap.loop({enableGestures: true}, function(frame) {
 			// cuando señalemos en la pantalla, se dibujará un círculo. 
@@ -213,26 +215,6 @@
 							}
 						case "screenTap":
 							console.log("screen tap");
-							// una vez tenemos todos los enlaces, vemos en cuál ha hecho click el usuario.
-							// Para ello, nos basaremos en la posición del screen tap y en los atributos
-							// offsetLeft y offsetTop de cada enlace
-							
-							// // obtenemos el dedo con el que hemos hecho screen tap
-							// function has_same_id(dedo) {
-							// 	return dedo.id == gesture.pointableIds[0];
-							// }
-							// var dedo = frame.fingers.filter(has_same_id)[0];
-
-							// // calculamos la posición del screen tap sobre la pantalla
-							// var pos_top = (1 - ((dedo.tipPosition[1] - 50) / 120)) * body.offsetHeight;
-							// var pos_left = (dedo.tipPosition[0] * body.offsetWidth / 120) + (body.offsetWidth / 2);
-
-							// console.log("dedo")
-							// console.log(pos_top);
-							// console.log(pos_left);
-							// console.log("botón")
-							// console.log(offset_t);
-							// console.log(offset_l);
 
 						break;
 					}
@@ -259,49 +241,45 @@
 					pointer.style.borderRadius = size - 5 + 'px';
 
 					if (finger.extended) {
-						if (!temporizador) {
-							temporizador = true;
-							pointer.style.visibility   = 'visible';
-							cur_pointer_t  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
-			          		body.offsetHeight;
-			          		pointer.style.top = cur_pointer_t + 'px';
+						pointer.style.visibility   = 'visible';
+						cur_pointer_t  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
+		          		body.offsetHeight;
+		          		pointer.style.top = cur_pointer_t + 'px';
 
-			        		cur_pointer_l = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
-							( body.offsetWidth / 2 );
-							pointer.style.left = cur_pointer_l + 'px';
+		        		cur_pointer_l = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
+						( body.offsetWidth / 2 );
+						pointer.style.left = cur_pointer_l + 'px';
 
-							old_pointer_l = cur_pointer_l;
-							old_pointer_t = cur_pointer_t;
-						} else {
-							pointer.style.visibility   = 'visible';
-							cur_pointer_t  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
-			          		body.offsetHeight;
-			          		pointer.style.top = cur_pointer_t + 'px';
 
-			        		cur_pointer_l = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
-							( body.offsetWidth / 2 );
-							pointer.style.left = cur_pointer_l + 'px';
+						if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
+							Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
+							console.log("yay");
 
-							if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
-								Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
-								console.log("yay");
-								var offset_l = get_offset_parent("left", playallbutton[0]);
-								var offset_t = get_offset_parent("top", playallbutton[0]);
-								console.log("offset_l = ", offset_l);
-								console.log("offset_t = ", offset_t);
-								console.log("cur_pointer_l = ", cur_pointer_l);
-								console.log("cur_pointer_t = ", cur_pointer_t)
-								if (Math.abs(cur_pointer_t - offset_t) <= 50) {
-									console.log("click");
-									playallbutton[0].click();
-								}
-							} else {
-								console.log("nay");
+							var offset_l = get_offset_parent("left", playallbutton[0]);
+							var offset_t = get_offset_parent("top", playallbutton[0]);
+
+							console.log("offset_l = ", offset_l);
+							console.log("offset_t = ", offset_t);
+							console.log("cur_pointer_l = ", cur_pointer_l);
+							console.log("cur_pointer_t = ", cur_pointer_t);
+
+							if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
+								Math.abs(cur_pointer_l - offset_l) <= 50) {
+								console.log("click");
+								window.setTimeout(function() {
+									temporizador = false;
+									$scope.progressbar.start();
+								}, 4000);
+								$scope.progressbar.complete();
+								playallbutton[0].click();
 							}
+						} else {
+							console.log("nay");
 						}
-						window.setTimeout(function() {
-							temporizador = false;
-						}, 4000);
+
+						old_pointer_l = cur_pointer_l;
+						old_pointer_t = cur_pointer_t;
+
 					}
 				});
 			} else {
