@@ -130,7 +130,7 @@
 			$scope.duration = Playback.getDuration();
 		});
 
-		Leap.loop({enableGestures: true}, function(frame) {
+		var controller = Leap.loop({enableGestures: true}, function(frame) {
 			if(frame.valid && frame.gestures.length > 0){
 				frame.gestures.forEach(function(gesture) {
 					switch (gesture.type){
@@ -160,8 +160,16 @@
 							}, 300);
 						break;
 						case "circle":
-							console.log("Circle Gesture");
-						break;
+							// var pointableID = gesture.pointableIds[0];
+							var direction = frame.pointable(pointableID).direction;
+							var volume = Playback.getVolume();
+							// Check if the circle is clockwise or not
+							if (Leap.vec3.dot(direction, gesture.normal) > 0){ //Clockwise
+								Playback.setVolume(volume + 10);
+							} 
+							else{
+								Playback.setVolume(volume - 10)
+							}
 						case "screenTap":
 							console.log("Screen Tap Gesture");
 						break;
