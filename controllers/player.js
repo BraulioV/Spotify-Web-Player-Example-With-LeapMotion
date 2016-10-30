@@ -170,7 +170,7 @@
 							}
 							window.setTimeout(function() {
                         		eventDispatched = false;
-							}, 300);
+							}, 500);
 						break;
 						case "circle":
 							var pointableID = gesture.pointableIds[0];
@@ -188,7 +188,33 @@
 								Playback.setVolume(volume*0.95)
 							}
 						case "screenTap":
-							console.log("Screen Tap Gesture");
+							console.log("screen tap");
+							// obtenemos todos los enlaces del documento, menos el botón verde "play all"
+							// var enlaces = document.documentElement.getElementsByClassName("ng-binding");
+							// console.log(enlaces);
+							// obtenemos el botón de play all de una playlist
+							var playallbutton = document.documentElement.getElementsByClassName("button green");
+							// una vez tenemos todos los enlaces, vemos en cuál ha hecho click el usuario.
+							// Para ello, nos basaremos en la posición del screen tap y en los atributos
+							// offsetLeft y offsetTop de cada enlace
+							
+							// obtenemos el dedo con el que hemos hecho screen tap
+							function has_same_id(dedo) {
+								return dedo.id == gesture.pointableIds[0];
+							}
+							var dedo = frame.fingers.filter(has_same_id)[0];
+
+							// calculamos la posición del screen tap sobre la pantalla
+							var pos_top = (1 - ((dedo.tipPosition[1] - 50) / 120)) * body.offsetHeight;
+							var pos_left = (dedo.tipPosition[0] * body.offsetWidth / 120) + (body.offsetWidth / 2);
+
+							console.log("dedo")
+							console.log(pos_top);
+							console.log(pos_left);
+							console.log("botón")
+							console.log(playallbutton[0].offsetParent.offsetTop);
+							console.log(playallbutton[0].offsetParent.offsetLeft);
+
 						break;
 					}
 
@@ -208,7 +234,6 @@
 			// señalar con el dedo
 			if (frame.valid && frame.fingers.length > 0) {
 				frame.fingers.forEach(function(finger) {
-					console.log('dedo')
 					var size = -3 * finger.tipPosition[2];
 					pointer.style.width        = size     + 'px';
 					pointer.style.height       = size     + 'px';
