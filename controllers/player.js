@@ -165,10 +165,10 @@
 							var volume = Playback.getVolume();
 							// Check if the circle is clockwise or not
 							if (Leap.vec3.dot(direction, gesture.normal) > 0){ //Clockwise
-								Playback.setVolume(volume + 10);
+								Playback.setVolume(volume*1.05);
 							} 
 							else{
-								Playback.setVolume(volume - 10)
+								Playback.setVolume(volume*0.95)
 							}
 						case "screenTap":
 							console.log("Screen Tap Gesture");
