@@ -4,7 +4,6 @@
 	var eventDispatched = false;		// temporizador para leapç
 	var pointer = document.createElement( 'div' );
 	pointer.id = 'leap';
-	var body = document.body;
 
 	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
 		$scope.view = 'welcome';
@@ -142,6 +141,7 @@
 			pointer.style.zIndex          = 50;
 			pointer.style.opacity         = 0.7;
 			pointer.style.backgroundColor = '#00aaff';
+			var body = document.body;
 
 			body.appendChild( pointer );
 			if(frame.valid && frame.gestures.length > 0){
@@ -192,14 +192,15 @@
 						break;
 					}
 					var hand = frame.hands[0];
-					if ((hand.grabStrength == 1 || hands.grabStrength >= 0.9) &&
+					if ((hand.grabStrength == 1 || hand.grabStrength >= 0.9) &&
 						Playback.getVolume() != 0) {
 						Playback.setLastVolume();
 						Playback.setVolume(0);
-					}
-					else if((hand.grabStrength == 0 || hands.grabStrength <= 0.1) &&
+					} else {
+						if((hand.grabStrength == 0 || hand.grabStrength <= 0.1) &&
 						Playback.getVolume() == 0){
-						Playback.setVolume(Playback.getLastVolume());
+							Playback.setVolume(Playback.getLastVolume());
+						}
 					}
 
 				});
