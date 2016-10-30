@@ -9,6 +9,7 @@
 		var _progress = 0;
 		var _duration = 0;
 		var _trackdata = null;
+		var _last_volume = _volume;
 
 		function tick() {
 			if (!_playing) {
@@ -69,6 +70,12 @@
 		return {
 			getVolume: function() {
 				return _volume;
+			},
+			getLastVolume: function() {
+				return _last_volume;
+			},
+			setLastVolume: function(){
+				_last_volume = _volume;
 			},
 			setVolume: function(v) {
 				_volume = v;
