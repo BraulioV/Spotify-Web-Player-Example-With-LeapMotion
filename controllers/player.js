@@ -191,6 +191,17 @@
 							console.log("Screen Tap Gesture");
 						break;
 					}
+					var hand = frame.hands[0];
+					if ((hand.grabStrength == 1 || hands.grabStrength >= 0.9) &&
+						Playback.getVolume() != 0) {
+						Playback.setLastVolume();
+						Playback.setVolume(0);
+					}
+					else if((hand.grabStrength == 0 || hands.grabStrength <= 0.1) &&
+						Playback.getVolume() == 0){
+						Playback.setVolume(Playback.getLastVolume());
+					}
+
 				});
 			}
 			// señalar con el dedo
