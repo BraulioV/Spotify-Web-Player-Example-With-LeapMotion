@@ -160,12 +160,16 @@
 							}, 300);
 						break;
 						case "circle":
-							// var pointableID = gesture.pointableIds[0];
+							var pointableID = gesture.pointableIds[0];
 							var direction = frame.pointable(pointableID).direction;
 							var volume = Playback.getVolume();
 							// Check if the circle is clockwise or not
 							if (Leap.vec3.dot(direction, gesture.normal) > 0){ //Clockwise
-								Playback.setVolume(volume*1.05);
+								var volumen = volume*1.05;
+								console.log(volumen)
+								if (volumen < 100) {
+									Playback.setVolume(volume*1.05);
+								}
 							} 
 							else{
 								Playback.setVolume(volume*0.95)
