@@ -1,7 +1,10 @@
 (function() {
 
 	var module = angular.module('PlayerApp');
-	var eventDispatched = false;		// temporizador para leap
+	var eventDispatched = false;		// temporizador para leapç
+	var pointer = document.createElement( 'div' );
+	pointer.id = 'leap';
+	var body = document.body;
 
 	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
 		$scope.view = 'welcome';
@@ -130,7 +133,17 @@
 			$scope.duration = Playback.getDuration();
 		});
 
+
 		var controller = Leap.loop({enableGestures: true}, function(frame) {
+			// cuando señalemos en la pantalla, se dibujará un círculo. 
+			// Inspirado en https://github.com/hakimel/reveal.js/blob/flexbox/plugin/leap/leap.js
+			pointer.style.position        = 'absolute';
+			pointer.style.visibility      = 'hidden';
+			pointer.style.zIndex          = 50;
+			pointer.style.opacity         = 0.7;
+			pointer.style.backgroundColor = '#00aaff';
+
+			body.appendChild( pointer );
 			if(frame.valid && frame.gestures.length > 0){
 				frame.gestures.forEach(function(gesture) {
 					switch (gesture.type){
@@ -179,6 +192,27 @@
 						break;
 					}
 				});
+			}
+			// señalar con el dedo
+			if (frame.valid && frame.fingers.length > 0) {
+				frame.fingers.forEach(function(finger) {
+					console.log('dedo')
+					var size = -3 * finger.tipPosition[2];
+					pointer.style.width        = size     + 'px';
+					pointer.style.height       = size     + 'px';
+					pointer.style.borderRadius = size - 5 + 'px';
+
+					if (finger.extended) {
+						pointer.style.visibility   = 'visible';
+						pointer.style.top  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
+		          		body.offsetHeight + 'px';
+
+		        		pointer.style.left = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
+						( body.offsetWidth / 2 ) + 'px';
+					}
+				});
+			} else {
+				pointer.style.visibility   = 'hidden';
 			}
         });
 	});
