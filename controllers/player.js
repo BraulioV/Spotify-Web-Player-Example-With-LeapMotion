@@ -13,7 +13,6 @@
 	var old_pointer_l = 0;
 	var cur_pointer_t = 0;
 	var cur_pointer_l = 0;
-	var temporizador = false;
 	// función para saber la localización de un elemento
 	function get_offset_parent(kind, element) {
 		var local_element = element;
@@ -29,7 +28,7 @@
 		return offset;
 	}
 
-	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
+	module.controller('PlayerController', function($scope, $interval, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
 		$scope.view = 'welcome';
 		$scope.profileUsername = Auth.getUsername();
 		$scope.playlists = [];
@@ -266,10 +265,12 @@
 							if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
 								Math.abs(cur_pointer_l - offset_l) <= 50) {
 								console.log("click");
-								window.setTimeout(function() {
-									temporizador = false;
-									$scope.progressbar.start();
-								}, 4000);
+								$scope.progressbar.start();
+								$interval(function(){}, 4000);
+								// window.setTimeout(function() {
+								// 	temporizador = false;
+								// }, 4000);
+
 								$scope.progressbar.complete();
 								playallbutton[0].click();
 							}
@@ -279,7 +280,6 @@
 
 						old_pointer_l = cur_pointer_l;
 						old_pointer_t = cur_pointer_t;
-
 					}
 				});
 			} else {
