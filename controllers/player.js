@@ -290,7 +290,7 @@
 						if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
 							Math.abs(cur_pointer_l - offset_l) <= 20) {
 							console.log("click");
-							
+
 							// $scope.progressbar.complete();
 							playallbutton[0].click();
 						}
