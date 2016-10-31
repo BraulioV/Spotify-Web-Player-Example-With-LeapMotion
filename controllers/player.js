@@ -13,7 +13,7 @@
 	var old_pointer_l = 0;
 	var cur_pointer_t = 0;
 	var cur_pointer_l = 0;
-	var temporizador = false;
+	var old_timestamp = Date.now();
 	// función para saber la localización de un elemento
 	function get_offset_parent(kind, element) {
 		var local_element = element;
@@ -29,7 +29,7 @@
 		return offset;
 	}
 
-	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
+	module.controller('PlayerController', function($scope, $interval, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
 		$scope.view = 'welcome';
 		$scope.profileUsername = Auth.getUsername();
 		$scope.playlists = [];
@@ -251,56 +251,55 @@
 						}, 1000);
 					}
 			}
-			// señalar con el dedo
-			if (frame.valid && frame.fingers.length > 0) {
-				frame.fingers.forEach(function(finger) {
-					var size = -3 * finger.tipPosition[2];
-					pointer.style.width        = size     + 'px';
-					pointer.style.height       = size     + 'px';
-					pointer.style.borderRadius = size - 5 + 'px';
+			// señalar con el dedo. Deben estar el dedo índice y corazón extendidos
+			if (frame.valid && frame.fingers.length > 0 && frame.fingers[1].extended
+				&& frame.fingers[2].extended) {
+				var finger = frame.fingers[1];
+				var size = -3 * finger.tipPosition[2];
+				pointer.style.width        = size     + 'px';
+				pointer.style.height       = size     + 'px';
+				pointer.style.borderRadius = size - 5 + 'px';
 
-					if (finger.extended) {
-						pointer.style.visibility   = 'visible';
-						cur_pointer_t  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
-		          		body.offsetHeight;
-		          		pointer.style.top = cur_pointer_t + 'px';
+				pointer.style.visibility   = 'visible';
+				cur_pointer_t  = ( 1 - (( finger.tipPosition[1] - 50) / 120 )) *
+          		body.offsetHeight;
+          		pointer.style.top = cur_pointer_t + 'px';
 
-		        		cur_pointer_l = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
-						( body.offsetWidth / 2 );
-						pointer.style.left = cur_pointer_l + 'px';
+        		cur_pointer_l = ( finger.tipPosition[0] * body.offsetWidth / 120 ) +
+				( body.offsetWidth / 2 );
+				pointer.style.left = cur_pointer_l + 'px';
 
+				// comprobamos cada 4 segundos
+				// $scope.progressbar.start();
+				console.log("frame.timestamp = ", frame.timestamp);
+				console.log("old_timestamp = ", old_timestamp);
+				console.log("resta = ", frame.timestamp - old_timestamp);
+				if (frame.timestamp - old_timestamp >= 60000) {
+					console.log("timestamp");
+					if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
+						Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
 
-						if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
-							Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
-							//console.log("yay");
+						var offset_l = get_offset_parent("left", playallbutton[0]);
+						var offset_t = get_offset_parent("top", playallbutton[0]);
 
-							var offset_l = get_offset_parent("left", playallbutton[0]);
-							var offset_t = get_offset_parent("top", playallbutton[0]);
+						//console.log("offset_l = ", offset_l);
+						//console.log("offset_t = ", offset_t);
+						//console.log("cur_pointer_l = ", cur_pointer_l);
+						//console.log("cur_pointer_t = ", cur_pointer_t);
 
-							//console.log("offset_l = ", offset_l);
-							//console.log("offset_t = ", offset_t);
-							//console.log("cur_pointer_l = ", cur_pointer_l);
-							//console.log("cur_pointer_t = ", cur_pointer_t);
-
-							if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
-								Math.abs(cur_pointer_l - offset_l) <= 50) {
-								//console.log("click");
-								window.setTimeout(function() {
-									temporizador = false;
-									$scope.progressbar.start();
-								}, 4000);
-								$scope.progressbar.complete();
-								playallbutton[0].click();
-							}
-						} else {
-							//console.log("nay");
+						if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
+							Math.abs(cur_pointer_l - offset_l) <= 20) {
+							console.log("click");
+							
+							// $scope.progressbar.complete();
+							playallbutton[0].click();
 						}
-
-						old_pointer_l = cur_pointer_l;
-						old_pointer_t = cur_pointer_t;
-
 					}
-				});
+
+					old_pointer_l = cur_pointer_l;
+					old_pointer_t = cur_pointer_t;
+					old_timestamp = frame.timestamp;
+				}
 			} else {
 				pointer.style.visibility   = 'hidden';
 			}
