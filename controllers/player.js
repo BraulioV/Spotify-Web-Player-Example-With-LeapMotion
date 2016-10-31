@@ -202,16 +202,23 @@
 							var pointableID = gesture.pointableIds[0];
 							var direction = frame.pointable(pointableID).direction;
 							var volume = Playback.getVolume();
+							console.log('Volumen original = ', volume)
 							// Check if the circle is clockwise or not
 							if (Leap.vec3.dot(direction, gesture.normal) > 0){ //Clockwise
 								var volumen = volume*1.05;
-								console.log(volumen)
-								if (volumen < 100) {
-									Playback.setVolume(volume*1.05);
+								if (volumen > 100) {
+									volumen = 100;
 								}
+								$scope.volume = volumen;
+								$scope.changevolume();
 							} 
 							else{
-								Playback.setVolume(volume*0.95)
+								var volumen = volume*0.95;
+								if(volumen < 0.05){
+									volumen = 0.05;
+								}
+								$scope.volume = volumen;
+								$scope.changevolume();
 							}
 						case "screenTap":
 							console.log("screen tap");
@@ -253,19 +260,19 @@
 
 						if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
 							Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
-							console.log("yay");
+							//console.log("yay");
 
 							var offset_l = get_offset_parent("left", playallbutton[0]);
 							var offset_t = get_offset_parent("top", playallbutton[0]);
 
-							console.log("offset_l = ", offset_l);
-							console.log("offset_t = ", offset_t);
-							console.log("cur_pointer_l = ", cur_pointer_l);
-							console.log("cur_pointer_t = ", cur_pointer_t);
+							//console.log("offset_l = ", offset_l);
+							//console.log("offset_t = ", offset_t);
+							//console.log("cur_pointer_l = ", cur_pointer_l);
+							//console.log("cur_pointer_t = ", cur_pointer_t);
 
 							if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
 								Math.abs(cur_pointer_l - offset_l) <= 50) {
-								console.log("click");
+								//console.log("click");
 								window.setTimeout(function() {
 									temporizador = false;
 									$scope.progressbar.start();
@@ -274,7 +281,7 @@
 								playallbutton[0].click();
 							}
 						} else {
-							console.log("nay");
+							//console.log("nay");
 						}
 
 						old_pointer_l = cur_pointer_l;
