@@ -160,7 +160,7 @@
 		$scope.progressbar = ngProgressFactory.createInstance();
 
 		var controller = Leap.loop({enableGestures: true}, function(frame) {
-			// cuando señalemos en la pantalla, se dibujará un círculo. 
+			// cuando señalemos en la pantalla, se dibujará un círculo.
 			// Inspirado en https://github.com/hakimel/reveal.js/blob/flexbox/plugin/leap/leap.js
 			pointer.style.position        = 'absolute';
 			pointer.style.visibility      = 'hidden';
@@ -211,7 +211,7 @@
 								}
 								$scope.volume = volumen;
 								$scope.changevolume();
-							} 
+							}
 							else{
 								var volumen = volume*0.95;
 								if(volumen < 0.05){
@@ -228,17 +228,24 @@
 
 				});
 			}
-			// var hand = frame.hands[0];
-			// if ((hand.grabStrength == 1 || hand.grabStrength >= 0.9) &&
-			// 	Playback.getVolume() != 0) {
-			// 	Playback.setLastVolume();
-			// 	Playback.setVolume(0);
-			// } else {
-			// 	if((hand.grabStrength == 0 || hand.grabStrength <= 0.1) &&
-			// 	Playback.getVolume() == 0){
-			// 		Playback.setVolume(Playback.getLastVolume());
-			// 	}
-			// }
+			for(var h = 0; h < frame.hands.length && h < 1; h++){
+				var hand = frame.hands[h];
+				console.log('holi');
+				if ((hand.grabStrength == 1 || hand.grabStrength >= 0.9) &&
+					Playback.getVolume() != 0) {
+						console.log('entro en el if');
+						Playback.setLastVolume();
+						$scope.volume = 0;
+						$scope.changevolume();
+						// Playback.setVolume(0);
+				}
+				else if((hand.grabStrength == 0 || hand.grabStrength <= 0.1) &&
+					Playback.getVolume() == 0){
+						$scope.volume = Playback.getLastVolume();
+						$scope.changevolume();
+						Playback.setVolume(Playback.getLastVolume());
+					}
+			}
 			// señalar con el dedo
 			if (frame.valid && frame.fingers.length > 0) {
 				frame.fingers.forEach(function(finger) {
