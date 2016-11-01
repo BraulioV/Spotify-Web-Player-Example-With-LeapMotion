@@ -29,7 +29,7 @@
 		return offset;
 	}
 
-	module.controller('PlayerController', function($scope, $interval, $rootScope, Auth, API, PlayQueue, Playback, $location, ngProgressFactory) {
+	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
 		$scope.view = 'welcome';
 		$scope.profileUsername = Auth.getUsername();
 		$scope.playlists = [];
@@ -156,9 +156,6 @@
 			$scope.duration = Playback.getDuration();
 		});
 
-		// progressbar
-		$scope.progressbar = ngProgressFactory.createInstance();
-
 		var controller = Leap.loop({enableGestures: true}, function(frame) {
 			// cuando señalemos en la pantalla, se dibujará un círculo.
 			// Inspirado en https://github.com/hakimel/reveal.js/blob/flexbox/plugin/leap/leap.js
@@ -230,10 +227,8 @@
 			}
 			for(var h = 0; h < frame.hands.length && h < 1; h++){
 				var hand = frame.hands[h];
-				console.log('holi');
 				if ((hand.grabStrength == 1 || hand.grabStrength >= 0.9) &&
 					Playback.getVolume() != 0) {
-						console.log('entro en el if');
 						Playback.setLastVolume();
 						$scope.volume = 0;
 						$scope.changevolume();
@@ -264,13 +259,11 @@
 				( body.offsetWidth / 2 );
 				pointer.style.left = cur_pointer_l + 'px';
 
-				// comprobamos cada 4 segundos
-				// $scope.progressbar.start();
-				console.log("frame.timestamp = ", frame.timestamp);
-				console.log("old_timestamp = ", old_timestamp);
-				console.log("resta = ", frame.timestamp - old_timestamp);
+				// console.log("frame.timestamp = ", frame.timestamp);
+				// console.log("old_timestamp = ", old_timestamp);
+				// console.log("resta = ", frame.timestamp - old_timestamp);
 				if (frame.timestamp - old_timestamp >= 60000) {
-					console.log("timestamp");
+					// console.log("timestamp");
 					if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
 						Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
 
@@ -284,9 +277,7 @@
 
 						if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
 							Math.abs(cur_pointer_l - offset_l) <= 20) {
-							console.log("click");
-							
-							// $scope.progressbar.complete();
+							// console.log("click");
 							playallbutton[0].click();
 						}
 					}
