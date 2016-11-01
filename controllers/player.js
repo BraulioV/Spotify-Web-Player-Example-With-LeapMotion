@@ -232,13 +232,18 @@
 						Playback.setLastVolume();
 						$scope.volume = 0;
 						$scope.changevolume();
-						// Playback.setVolume(0);
+						window.setTimeout(function() {
+													eventDispatched = false;
+						}, 1000);
 				}
 				else if((hand.grabStrength == 0 || hand.grabStrength <= 0.1) &&
 					Playback.getVolume() == 0){
 						$scope.volume = Playback.getLastVolume();
 						$scope.changevolume();
 						Playback.setVolume(Playback.getLastVolume());
+						window.setTimeout(function() {
+													eventDispatched = false;
+						}, 1000);
 					}
 			}
 			// señalar con el dedo. Deben estar el dedo índice y corazón extendidos
