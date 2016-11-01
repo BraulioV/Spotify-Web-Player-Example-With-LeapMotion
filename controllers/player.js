@@ -4,10 +4,6 @@
 	var eventDispatched = false;		// temporizador para leap
 	var pointer = document.createElement( 'div' );	// puntero azul
 	pointer.id = 'leap';
-	// obtenemos todos los enlaces del documento, menos el botón verde "play all"
-	var enlaces = document.documentElement.getElementsByClassName("ng-binding");
-	// obtenemos el botón de play all de una playlist
-	var playallbutton = document.documentElement.getElementsByClassName("button green");
 	// variables para saber dónde apuntaba antes el pointer
 	var old_pointer_t = 0;
 	var old_pointer_l = 0;
@@ -29,6 +25,22 @@
 			local_element = local_element.offsetParent;
 		}
 		return offset;
+	}
+
+	// función para filtar elementos de una lista de portadas de playlists
+	function filtrar_li(lista) {
+		var aux_lista = [];
+		Array.from(lista).forEach(function(l) {
+			if (l.localName == "li") {
+				aux_lista.push(l);
+			}
+		})
+		return aux_lista;
+	}
+
+	// función para darle click a un elemento
+	function haz_click(elemento) {
+
 	}
 
 	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
@@ -167,6 +179,11 @@
 			pointer.style.opacity         = 0.7;
 			pointer.style.backgroundColor = '#00aaff';
 			var body = document.body;
+			// obtenemos todas las portadas de playlists en la parte browse
+			var enlaces = document.documentElement.getElementsByClassName("ng-scope");
+			var li_enlaces = filtrar_li(enlaces);
+			// obtenemos el botón de play all de una playlist
+			var playallbutton = document.documentElement.getElementsByClassName("button green");
 
 			body.appendChild( pointer );
 			if(frame.valid && frame.gestures.length > 0){
@@ -282,18 +299,53 @@
 					if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
 						Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
 
-						var offset_l = get_offset_parent("left", playallbutton[0]);
-						var offset_t = get_offset_parent("top", playallbutton[0]);
+						// lo primero que debemos comprobar es si estamos en una playlist
+						// o en la ventana "browse", donde se elige playlist
+						if (playallbutton.length == 2) {
+							// estamos en una playlist
+							// comprobamos si estamos en el botón de play all
+							var offset_l = get_offset_parent("left", playallbutton[0]);
+							var offset_t = get_offset_parent("top", playallbutton[0]);
 
-						// console.log("offset_l = ", offset_l);
-						// console.log("offset_t = ", offset_t);
-						// console.log("cur_pointer_l = ", cur_pointer_l);
-						// console.log("cur_pointer_t = ", cur_pointer_t);
+							// console.log("offset_l = ", offset_l);
+							// console.log("offset_t = ", offset_t);
+							// console.log("cur_pointer_l = ", cur_pointer_l);
+							// console.log("cur_pointer_t = ", cur_pointer_t);
 
-						if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
-							Math.abs(cur_pointer_l - offset_l) <= 20) {
-							// console.log("click");
-							playallbutton[0].click();
+							if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
+								Math.abs(cur_pointer_l - offset_l) <= 20) {
+								// console.log("click");
+								playallbutton[0].click();
+							}
+						} else {
+							// estamos en la ventana browse
+							// AL TENER UNA HTMLCollection ESTAMOS OBLIGADOS
+							// A HACER TODAS LAS OPERACIONES SIN USAR FUNCIONES 
+							// EXTERNAS...
+							li_enlaces.forEach(function(portada) {
+								var local_element = portada;
+								var offset_l = portada.offsetLeft;
+								var offset_t = portada.offsetTop;
+								while (local_element.offsetParent != null) {
+									offset_l += local_element.offsetParent.offsetLeft;
+									offset_t += local_element.offsetParent.offsetTop;
+									local_element = local_element.offsetParent;
+								}
+
+								console.log("offset_l = ", offset_l);
+								console.log("offset_t = ", offset_t);
+								console.log("cur_pointer_l = ", cur_pointer_l);
+								console.log("cur_pointer_t = ", cur_pointer_t);
+								console.log(Math.abs(cur_pointer_t - offset_t));
+								console.log(Math.abs(cur_pointer_l - offset_l));
+								// console.log(portada.innerHTML);
+
+								if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
+									Math.abs(cur_pointer_l - offset_l) <= 50) {
+									console.log("click");
+									location = portada.firstElementChild.href
+								}
+							})
 						}
 					}
 
