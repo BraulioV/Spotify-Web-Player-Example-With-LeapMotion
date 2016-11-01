@@ -16,6 +16,13 @@
 	function get_offset_parent(kind, element) {
 		var local_element = element;
 		var offset = 0;
+
+		if (kind == "left") {
+			offset += element.offsetLeft;
+		} else {
+			offset += element.offsetTop;
+		}
+
 		while (local_element.offsetParent != null) {
 			if (kind == "left") {
 				offset += local_element.offsetParent.offsetLeft;
@@ -39,8 +46,25 @@
 	}
 
 	// función para darle click a un elemento
-	function haz_click(elemento) {
+	function haz_click(elemento, make_click, margen) {
+		var offset_l = get_offset_parent("left", elemento);
+		var offset_t = get_offset_parent("top", elemento);
 
+		console.log("offset_l = ", offset_l);
+		console.log("offset_t = ", offset_t);
+		console.log("cur_pointer_l = ", cur_pointer_l);
+		console.log("cur_pointer_t = ", cur_pointer_t);
+
+		if (Math.abs(cur_pointer_t - offset_t) <= margen &&
+			Math.abs(cur_pointer_l - offset_l) <= margen) {
+			// console.log("click");
+			if (make_click) {
+				elemento.click();
+			} else {
+				console.log("location");
+				location = elemento.firstElementChild.href;
+			}
+		}
 	}
 
 	module.controller('PlayerController', function($scope, $rootScope, Auth, API, PlayQueue, Playback, $location) {
@@ -294,7 +318,7 @@
 					old_timestamp = frame.timestamp;
 				}
 
-				if (frame.timestamp - old_timestamp >= 600000) {
+				if (frame.timestamp - old_timestamp >= 40000) {
 					// console.log("timestamp");
 					if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
 						Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
@@ -303,48 +327,12 @@
 						// o en la ventana "browse", donde se elige playlist
 						if (playallbutton.length == 2) {
 							// estamos en una playlist
-							// comprobamos si estamos en el botón de play all
-							var offset_l = get_offset_parent("left", playallbutton[0]);
-							var offset_t = get_offset_parent("top", playallbutton[0]);
-
-							// console.log("offset_l = ", offset_l);
-							// console.log("offset_t = ", offset_t);
-							// console.log("cur_pointer_l = ", cur_pointer_l);
-							// console.log("cur_pointer_t = ", cur_pointer_t);
-
-							if (Math.abs(cur_pointer_t - offset_t) <= 20 &&
-								Math.abs(cur_pointer_l - offset_l) <= 20) {
-								// console.log("click");
-								playallbutton[0].click();
-							}
+							haz_click(playallbutton[0], true, 20);
+							
 						} else {
 							// estamos en la ventana browse
-							// AL TENER UNA HTMLCollection ESTAMOS OBLIGADOS
-							// A HACER TODAS LAS OPERACIONES SIN USAR FUNCIONES 
-							// EXTERNAS...
 							li_enlaces.forEach(function(portada) {
-								var local_element = portada;
-								var offset_l = portada.offsetLeft;
-								var offset_t = portada.offsetTop;
-								while (local_element.offsetParent != null) {
-									offset_l += local_element.offsetParent.offsetLeft;
-									offset_t += local_element.offsetParent.offsetTop;
-									local_element = local_element.offsetParent;
-								}
-
-								console.log("offset_l = ", offset_l);
-								console.log("offset_t = ", offset_t);
-								console.log("cur_pointer_l = ", cur_pointer_l);
-								console.log("cur_pointer_t = ", cur_pointer_t);
-								console.log(Math.abs(cur_pointer_t - offset_t));
-								console.log(Math.abs(cur_pointer_l - offset_l));
-								// console.log(portada.innerHTML);
-
-								if (Math.abs(cur_pointer_t - offset_t) <= 50 &&
-									Math.abs(cur_pointer_l - offset_l) <= 50) {
-									console.log("click");
-									location = portada.firstElementChild.href
-								}
+								haz_click(portada, false, 100);
 							})
 						}
 					}
