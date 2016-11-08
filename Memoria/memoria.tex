@@ -15,11 +15,12 @@
 \usepackage{fancybox}
 \usepackage{pseudocode}
 \usepackage[all]{xy}
-\usepackage{minted}
-\usepackage{tikz}
+%\usepackage{minted}
+%\usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{multirow}
-
+\usepackage{float}
+\usepackage{subfigure}
 \pgfplotsset{compat=1.5}
 
 % a4large.sty -- fill an A4 (210mm x 297mm) page
@@ -97,7 +98,7 @@ Básicamente, este reproductor incluye casi todas las cosas que pueden hacerse c
 \begin{enumerate}[\qquad \color{verde}{$\bullet$}]
   \item Seleccionar una \textit{\textcolor{verde}{playlists}} del usuario o una de las que hace \textit{\textcolor{verde}{Spotify}}.
   \item Una vez seleccionada una \textit{\textcolor{verde}{playlist}}, reproducir todas las canciones seguidas o seleccionar una de ellas. Debido a limitaciones de la API, \textcolor{verde}{\textbf{sólo pueden reproducirse 30 segundos}} de canción.
-  \item Permite controlar el reproductor con botones de \textbf{\textcolor{verde}{Play}}, \textbf{\textcolor{verde}{Pause}}, \textbf{\textcolor{verde}{Next song}} y \textbf{\textcolor{verde}{Previous song}}.
+  \item Permite controlar el reproductor con botones de \textbf{\textcolor{verde}{Play}}, \textbf{\textcolor{verde}{Pause}}, \textbf{\textcolor{verde}{Next song}}, \textbf{\textcolor{verde}{Previous song}} y \textbf{\textcolor{verde}{controlar el nivel de volumen}} mediante una barra deslizador.
   \item \textbf{\textcolor{verde}{No}} permite la creación de \textit{\textcolor{verde}{playlists}}.
 \end{enumerate}
 
@@ -106,4 +107,49 @@ El reproductor está hecho con \textit{\textcolor{verde}{AngularJS}}, un framewo
 
 \section{\textcolor{verde}Guía de uso}
 
+Gracias a \textit{\textcolor{verde}{Leap Motion}}, podemos realizar las siguientes acciones a partir de gestos:
+
+\begin{enumerate}
+  \item \textbf{\textcolor{verde}{Pausa.}}
+  \item \textbf{\textcolor{verde}{Reproducir.}}
+  \item \textbf{\textcolor{verde}{Pasar a la siguiente canción.}}
+  \item \textbf{\textcolor{verde}{Retroceder a la canción anterior.}}
+  \item \textbf{\textcolor{verde}{Subir el volumen.}}
+  \item \textbf{\textcolor{verde}{Bajar el volumen.}}
+  \item \textbf{\textcolor{verde}{Silenciar (Mute).}}
+  \item \textbf{\textcolor{verde}{Recuperar el volumen.}}
+  \item \textbf{\textcolor{verde}{Seleccionar y reproducir listas de canciones.}}
+\end{enumerate}
+
+A continuación, podemos ver cómo realizar cada uno de los gestos anteriormente vistos.
+
+\subsection{\textcolor{verde}Pausa}
+
+Cuando hay una canción reproduciéndose, podemos pausarla haciendo uso del gesto predefinido en Leap ``\textbf{\textcolor{verde}{keytap}}'' que consiste en realizar un gesto similar a la pulsación de una tecla en el teclado (\hyperref[kt1]{Figura \ref*{kt1}}). También se puede realizar con la mano extendida hacia delante y realizar un golpe seco de muñeca hacia abajo (\hyperref[kt2]{Figura \ref*{kt2}}). Al realizarlos, la canción se pausará y cambiará el icono de reproduciendo a pausado, en la parte inferior izquierda de la pantalla.
+
+En la \hyperref[kt]{Figura \ref*{kt}} podemos ver un ejemplo visual de estos gestos.
+
+\begin{figure}[H]
+    \centering
+    \mbox {
+        
+        \subfigure[Gesto con el dedo.]{
+            \includegraphics[width=0.5\textwidth]{images/keytap1}
+            \label{kt1}
+        }
+        
+        \quad
+        
+        \subfigure[Gesto con la mano también admitido.] {
+            \includegraphics[width=0.5\textwidth]{images/keytap2}
+            \label{kt2}
+        }
+    }
+    
+    \caption{Gestos para pausar la música.}
+    \label{kt}
+\end{figure}
+
 \end{document}
+
+
