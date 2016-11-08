@@ -34,6 +34,8 @@
 \textheight     250 mm
 \footskip       14 mm    % distance from bottom of body to bottom of foot
 
+\definecolor{verde}{rgb}{0.0, 0.65, 0.31}
+
 \usepackage[bookmarks=true,
             bookmarksnumbered=false, % true means bookmarks in
                                      % left window are numbered
@@ -58,8 +60,8 @@
 \renewcommand{\sectionmark}[1]{%
       \markright{\thesection\ #1}}
 \fancyhf{} %borra cabecera y pie actuales
-\fancyhead[LE,RO]{\textcolor[rgb]{0.5,0.8,0.9}{\bfseries\thepage}}
-\fancyhead[LO]{\bfseries\leftmark}
+\fancyhead[LE,RO]{\textcolor{verde}{\bfseries\thepage}}
+\fancyhead[LO]{\bfseries\rightmark}
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0pt}
 \addtolength{\headheight}{0.5pt} %espacio para la raya
@@ -75,7 +77,6 @@
 \subsectionfont{\fontfamily{pag}\selectfont}
 \subsubsectionfont{\fontfamily{pag}\selectfont}
 
-\definecolor{verde}{rgb}{0.0, 0.65, 0.31}
 
 %Definimos autor y título
 \title{\bf \textcolor{verde}{Reproductor Spotify con Gestos}}
