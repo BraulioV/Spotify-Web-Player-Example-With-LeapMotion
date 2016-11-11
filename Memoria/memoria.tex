@@ -142,24 +142,24 @@ En la \hyperref[kt]{Figura \ref*{kt}} podemos ver un ejemplo visual de estos ges
         \quad
         
         \subfigure[Gesto con la mano también admitido.] {
-            \includegraphics[width=0.5\textwidth]{images/keytap2}
+            \includegraphics[width=0.35\textwidth]{images/keytap2}
             \label{kt2}
         }
     }
     
-    \caption{Gestos para pausar la música.}
+    \caption{Gestos para pausar y reproducir la música.}
     \label{kt}
 \end{figure}
 
 \subsection{\textcolor{verde}Reproducir}
 
-Este evento se activa cuando la canción que se estaba reproduciendo \textit{\textcolor{está pausada}}. Para poder volver a reproducir la canción, tenemos que hacer el mismo gesto que para pausar una canción. Estos gestos los podemos ver en la \hyperref[kt]{Figura \ref*{kt}}.
+Este evento se activa cuando la canción que se estaba reproduciendo \textit{\textcolor{verde}{está pausada}}. Para poder volver a reproducir la canción, tenemos que hacer el mismo gesto que para pausar una canción. Estos gestos los podemos ver en la \hyperref[kt]{Figura \ref*{kt}}.
 
 Cuando se lance este evento, el icono de pausa de la parte inferior izquierda de la pantalla cambiará al icono de reproducción. 
 
 \subsection{\textcolor{verde}Pasar a la siguiente canción o a la anterior.}
 
-Estos gestos son bastante similares entre sí, ya que ambos utilizan el gesto predefinido ``\textbf{\textit{\textcolor{verde}{swipe}}}''. Este gesto consiste en pasar la mano desde un lado hacia el lado opuesto pasando por encima del \textit{\textcolor{Leap}}.
+Estos gestos son bastante similares entre sí, ya que ambos utilizan el gesto predefinido ``\textbf{\textit{\textcolor{verde}{swipe}}}''. Este gesto consiste en pasar la mano desde un lado hacia el lado opuesto pasando por encima del \textit{\textcolor{verde}{Leap}}.
 
 Dependiendo del sentido en el pasemos la mano, podremos pasar o retroceder de canción:
 
@@ -175,13 +175,52 @@ Dependiendo del sentido en el pasemos la mano, podremos pasar o retroceder de ca
 Para poder cambiar el volumen levemente, es decir, subirlo o bajarlo un poco, podemos hacer un gesto con el dedo que imita el gesto que haríamos subiendo o bajando el volumen en la rueda de volumen de cualquier radio. A continuación, podemos ver más claro cada gesto:
 
 \begin{enumerate}[$\bullet$]
-  \item \textbf{\textcolor{verde}{Bajar el volumen}}: para bajar el volumen, con el dedo estirado hacia la pantalla, podemos girarlo en el sentido antihorario. Girando el dedo en este sentido, reduciremos el volumen un 10\%, hasta un máximo del 5\% del volumen original.
-  \item \textbf{\textcolor{verde}{Subir el volumen}}: este gesto es totalmente contrario al anterior. Se realiza en el sentido horario y subirá el volumen un 5\% hasta llegar al máximo.
+  \item \textbf{\textcolor{verde}{Bajar el volumen}}: para bajar el volumen, con el dedo estirado hacia la pantalla, podemos girarlo en el sentido antihorario. Girando el dedo en este sentido, reduciremos el volumen un 10\%, hasta un máximo del 5\% del volumen original. Podemos verlo en la \hyperref[anticlkwise]{Figura \ref*{anticlkwise}}.
+  \item \textbf{\textcolor{verde}{Subir el volumen}}: este gesto es totalmente contrario al anterior. Se realiza en el sentido horario y subirá el volumen un 5\% hasta llegar al máximo. Podemos verlo en la \hyperref[clkwise]{Figura \ref*{clkwise}}.
 \end{enumerate}
 
 Durante la ejecución de ambos gestos, podemos ver cómo la barra de volumen de la parte izquierda de la pantalla va cambiando de forma dinámica según sea el nivel de volumen que haya.
 
-%%% Insertar aquí la imagen del dedo girando
+%% Insertar aquí la imagen del dedo girando
+
+\begin{figure}[H]
+    \centering
+    \mbox {
+        
+        \subfigure[Girando en sentido antihorario bajamos el volumen.]{
+            \includegraphics[width=0.5\textwidth]{images/circle1}
+            \label{anticlkwise}
+        }
+        
+        \quad
+        
+        \subfigure[Girando en sentido horario subimos el volumen.] {
+            \includegraphics[width=0.5\textwidth]{images/circle2}
+            \label{clkwise}
+        }
+    }
+    
+    \caption{Gestos para el volumen del reproductor.}
+    \label{dd}
+\end{figure}
+
+\subsection{\textcolor{verde}Silenciar y recuperar el sonido}
+
+Estos gestos se hacen con una sola mano, y son para silenciar el volumen (ponerlo a 0) y recuperar el volumen original en caso de que hayamos silenciado la música antes.
+
+Para silenciar la música, lo único que tenemos que hacer es, cerrar el puño para que se silencie la música. Una vez silenciada, la barra de volumen se irá a 0 para indicarnos de que el volumen del reproductor es 0.
+
+Si queremos recuperar el sonido, sólo tenemos que abrir la mano cuando el volumen de la música sea 0, y se recuperará automáticamente el volumen que había antes de silenciar el reproductor.
+
+%%% Insertar aquí las imágenes de los gestos
+
+
+\subsection{\textcolor{verde}Seleccionar y reproducir listas de canciones}
+
+Este gesto se puede realizar de forma dinámica y se utiliza para señalar qué lista de reproducción de las que aparecen en pantalla queremos reproducir, y una vez dentro de la lista seleccionada, podemos iniciar la reproducción de esta de forma similar a cómo la hemos seleccionado.
+
+Para ello, sólo tenemos que apuntar con dos dedos estirados hacia la pantalla. Cuando lo hagamos, aparecerá un puntero de color azul que nos indica hacia dónde estámos apuntando en la pantalla. Según lo cerca o lejos que estemos de esta, crecerá o encogerá su tamaño.
+
+Para seleccionar una lista de reproducción lo único que tenemos que hacer es mantener el puntero de color azul durante unos segundos encima de la lista de reproducción que queremos reproducir. Pasado este tiempo, se abrirá en el navegador la lista de reproducción y podremos reproducirla manteniendo el cursor unos segundos encima del botón \texttt{Reproducir} que aparece en verde en la pantalla del navegador. 
 
 \end{document}
-
