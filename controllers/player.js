@@ -270,8 +270,12 @@
 			}
 			for(var h = 0; h < frame.hands.length && h < 1; h++){
 				var hand = frame.hands[h];
+				 console.log("frame.fingers.length = ", frame.fingers.length);
+				 console.log("hand.fingers.length = ", hand.fingers.length);
 				// si no vemos ningún dedo, el puño estará cerrado
-				if (hand.pointables.length == 0 && Playback.getVolume() != 0) {
+				if (!hand.fingers[0].extended && !hand.fingers[1].extended && 
+					!hand.fingers[2].extended && !hand.fingers[3].extended && 
+					!hand.fingers[4].extended && Playback.getVolume() != 0) {
 						Playback.setLastVolume();
 						$scope.volume = 0;
 						$scope.changevolume();
@@ -281,7 +285,9 @@
 				}
 				// si vemos al menos tres dedos, consideraremos que la mano está
 				// extendida.
-				else if(hand.pointables.length > 3 && Playback.getVolume() == 0){
+				else if(hand.fingers[0].extended && hand.fingers[1].extended && 
+					hand.fingers[2].extended && hand.fingers[3].extended && 
+					hand.fingers[4].extended && Playback.getVolume() == 0){
 						$scope.volume = Playback.getLastVolume();
 						$scope.changevolume();
 						Playback.setVolume(Playback.getLastVolume());
