@@ -352,7 +352,7 @@
 					window.setTimeout(function() {
 						eventDispatched = false;
 					}, 1000);
-			else if (frame.valid && frame.fingers.length > 0 && frame.fingers[0].extended
+			} else if (frame.valid && frame.fingers.length > 0 && frame.fingers[0].extended
 				&& frame.fingers[1].extended && frame.fingers[2].extended && 
 				frame.fingers[3].extended && frame.fingers[4].extended && 
 				Playback.getVolume() == 0) {
@@ -362,7 +362,6 @@
 					window.setTimeout(function() {
 						eventDispatched = false;
 					}, 1000);
-				}
 			} else {
 				pointer.style.visibility   = 'hidden';
 			}
