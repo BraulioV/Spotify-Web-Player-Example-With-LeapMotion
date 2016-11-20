@@ -268,27 +268,28 @@
 
 				});
 			}
-			// for(var h = 0; h < frame.hands.length && h < 1; h++){
-			// 	var hand = frame.hands[h];
-			// 	if ((hand.grabStrength == 1 || hand.grabStrength >= 0.9) &&
-			// 		Playback.getVolume() != 0) {
-			// 			Playback.setLastVolume();
-			// 			$scope.volume = 0;
-			// 			$scope.changevolume();
-			// 			window.setTimeout(function() {
-			// 										eventDispatched = false;
-			// 			}, 1000);
-			// 	}
-			// 	else if((hand.grabStrength == 0 || hand.grabStrength <= 0.1) &&
-			// 		Playback.getVolume() == 0){
-			// 			$scope.volume = Playback.getLastVolume();
-			// 			$scope.changevolume();
-			// 			Playback.setVolume(Playback.getLastVolume());
-			// 			window.setTimeout(function() {
-			// 										eventDispatched = false;
-			// 			}, 1000);
-			// 		}
-			// }
+			for(var h = 0; h < frame.hands.length && h < 1; h++){
+				var hand = frame.hands[h];
+				// si no vemos ningún dedo, el puño estará cerrado
+				if (hand.pointables.length == 0 && Playback.getVolume() != 0) {
+						Playback.setLastVolume();
+						$scope.volume = 0;
+						$scope.changevolume();
+						window.setTimeout(function() {
+							eventDispatched = false;
+						}, 1000);
+				}
+				// si vemos al menos tres dedos, consideraremos que la mano está
+				// extendida.
+				else if(hand.pointables.length > 3 && Playback.getVolume() == 0){
+						$scope.volume = Playback.getLastVolume();
+						$scope.changevolume();
+						Playback.setVolume(Playback.getLastVolume());
+						window.setTimeout(function() {
+							eventDispatched = false;
+						}, 1000);
+					}
+			}
 			// señalar con el dedo. Deben estar el dedo índice y corazón extendidos
 			// si no hay ningún dedo extendido, silenciar el reproductor
 			if (frame.valid && frame.fingers.length > 0 && frame.fingers[1].extended
@@ -342,26 +343,6 @@
 					old_pointer_t = cur_pointer_t;
 					old_timestamp = frame.timestamp;
 				}
-			} else if (frame.valid && frame.fingers.length > 0 && !frame.fingers[0].extended
-				&& !frame.fingers[1].extended && !frame.fingers[2].extended && 
-				!frame.fingers[3].extended && !frame.fingers[4].extended && 
-				Playback.getVolume() != 0) {
-					Playback.setLastVolume();
-					$scope.volume = 0;
-					$scope.changevolume();
-					window.setTimeout(function() {
-						eventDispatched = false;
-					}, 1000);
-			} else if (frame.valid && frame.fingers.length > 0 && frame.fingers[0].extended
-				&& frame.fingers[1].extended && frame.fingers[2].extended && 
-				frame.fingers[3].extended && frame.fingers[4].extended && 
-				Playback.getVolume() == 0) {
-					$scope.volume = Playback.getLastVolume();
-					$scope.changevolume();
-					Playback.setVolume(Playback.getLastVolume());
-					window.setTimeout(function() {
-						eventDispatched = false;
-					}, 1000);
 			} else {
 				pointer.style.visibility   = 'hidden';
 			}
