@@ -29,3 +29,17 @@ Most of the functionality offered through the Spotify Web API endpoints is imple
 - Fetch user's saved tracks and save a tracks
 - Follow and unfollow artists or users
 - Check if the user is following an artist or user
+
+## On this fork
+
+We've added _Leap Motion_ gestures to control the player:
+
+* __Swipe__ to select previous/next song.
+
+* __Point__ with your index and middle fingers to select a playlist or to click _Play all_ button.
+
+* __Key tap__ to resume/pause the music.
+
+* __Make a circle__ with your finger to control the volumen.
+
+* __Close your fist__ to mute the player and __open your fist__ to unmute.
