@@ -50,10 +50,10 @@
 		var offset_l = get_offset_parent("left", elemento);
 		var offset_t = get_offset_parent("top", elemento);
 
-		console.log("offset_l = ", offset_l);
-		console.log("offset_t = ", offset_t);
-		console.log("cur_pointer_l = ", cur_pointer_l);
-		console.log("cur_pointer_t = ", cur_pointer_t);
+		// console.log("offset_l = ", offset_l);
+		// console.log("offset_t = ", offset_t);
+		// console.log("cur_pointer_l = ", cur_pointer_l);
+		// console.log("cur_pointer_t = ", cur_pointer_t);
 
 		if (Math.abs(cur_pointer_t - offset_t) <= margen &&
 			Math.abs(cur_pointer_l - offset_l) <= margen) {
@@ -61,7 +61,7 @@
 			if (make_click) {
 				elemento.click();
 			} else {
-				console.log("location");
+				// console.log("location");
 				location = elemento.firstElementChild.href;
 			}
 		}
@@ -201,7 +201,7 @@
 			pointer.style.visibility      = 'hidden';
 			pointer.style.zIndex          = 50;
 			pointer.style.opacity         = 0.7;
-			pointer.style.backgroundColor = '#00aaff';
+			pointer.style.backgroundColor = '#1db954';
 			var body = document.body;
 			// obtenemos todas las portadas de playlists en la parte browse
 			var enlaces = document.documentElement.getElementsByClassName("ng-scope");
@@ -270,8 +270,8 @@
 			}
 			for(var h = 0; h < frame.hands.length && h < 1; h++){
 				var hand = frame.hands[h];
-				 console.log("frame.fingers.length = ", frame.fingers.length);
-				 console.log("hand.fingers.length = ", hand.fingers.length);
+				 // console.log("frame.fingers.length = ", frame.fingers.length);
+				 // console.log("hand.fingers.length = ", hand.fingers.length);
 				// si no vemos ningún dedo, el puño estará cerrado
 				if (!hand.fingers[0].extended && !hand.fingers[1].extended && 
 					!hand.fingers[2].extended && !hand.fingers[3].extended && 
@@ -299,7 +299,7 @@
 			// señalar con el dedo. Deben estar el dedo índice y corazón extendidos
 			// si no hay ningún dedo extendido, silenciar el reproductor
 			if (frame.valid && frame.fingers.length > 0 && frame.fingers[1].extended
-				&& frame.fingers[2].extended) {
+				&& frame.fingers[2].extended && !frame.fingers[0].extended) {
 				var finger = frame.fingers[1];
 				var size = -3 * finger.tipPosition[2];
 				pointer.style.width        = size     + 'px';
@@ -315,18 +315,18 @@
 				( body.offsetWidth / 2 );
 				pointer.style.left = cur_pointer_l + 'px';
 
-				// console.log("frame.timestamp = ", frame.timestamp);
-				// console.log("old_timestamp = ", old_timestamp);
-				// console.log("resta = ", frame.timestamp - old_timestamp);
+				console.log("frame.timestamp = ", frame.timestamp);
+				console.log("old_timestamp = ", old_timestamp);
+				console.log("resta = ", frame.timestamp - old_timestamp);
 
 				// al principio el timestamp de javascript y el de leap no coinciden
 				// así que hay que igualarlos
 				if (frame.timestamp - old_timestamp >= 1400000000000) {
-					// console.log("resta grande");
+					console.log("resta grande");
 					old_timestamp = frame.timestamp;
 				}
 
-				if (frame.timestamp - old_timestamp >= 40000) {
+				if (frame.timestamp - old_timestamp >= 60000) {
 					// console.log("timestamp");
 					if (Math.abs(cur_pointer_t - old_pointer_t) <= 20 &&
 						Math.abs(cur_pointer_l - old_pointer_l) <= 20) {
